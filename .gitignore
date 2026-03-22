@@ -1,0 +1,51 @@
+# Xcode
+*.xcodeproj
+#
+build/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+*.swiftsourceinfo
+
+# User settings
+xcuserdata/
+
+# Swift Package Manager
+.build/
+Packages/
+Package.pins
+Package.resolved
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Application specific ignores (Battery Monitor)
+.staging/
+*.dmg
+*.DMG
+*.app
+
+# Ignore Scripts
+script-methodology
+
+# Ignore Tests
+Tests
+

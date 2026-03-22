@@ -1,0 +1,65 @@
+name: BatteryMonitor
+
+options:
+  bundleIdPrefix: com.user
+  deploymentTarget:
+    macOS: "13.0"   # MenuBarExtra + SMAppService require macOS 13+
+  xcodeVersion: "15"
+  createIntermediateGroups: true
+
+targets:
+  BatteryMonitor:
+    type: application
+    platform: macOS
+
+    # Code and resources
+    sources:
+      - path: Sources
+      - path: Resources
+        excludes:
+          - AppIcon.iconset
+          - AppIcon.svg
+
+    info:
+      path: Info.plist
+      properties:
+        CFBundleIconFile: AppIcon
+        # Show alerts (not banners) so they stay visible
+        NSUserNotificationAlertStyle: alert
+        # LSUIElement removed — app now shows in Dock AND menu bar
+
+    entitlements:
+      path: BatteryMonitor.entitlements
+
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER:  com.user.BatteryMonitor
+        PRODUCT_NAME:               "Battery Monitor"
+        MARKETING_VERSION:          "1.2.0"
+        CURRENT_PROJECT_VERSION:    "3"
+        SWIFT_VERSION:              "5.9"
+        MACOSX_DEPLOYMENT_TARGET:   "13.0"
+        ENABLE_HARDENED_RUNTIME:    YES
+        # Point Xcode at the .icns directly (no asset catalog needed)
+        INFOPLIST_KEY_CFBundleIconFile: AppIcon
+        # Ad-hoc signing — works for local use / direct distribution
+        CODE_SIGN_STYLE:            Manual
+        CODE_SIGN_IDENTITY:         "-"
+        CODE_SIGNING_REQUIRED:      NO
+        CODE_SIGNING_ALLOWED:       YES
+
+  BatteryMonitorTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: BatteryMonitor
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.user.BatteryMonitorTests
+        SWIFT_VERSION: "5.9"
+        MACOSX_DEPLOYMENT_TARGET: "13.0"
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Battery Monitor.app/Contents/MacOS/Battery Monitor"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        GENERATE_INFOPLIST_FILE: YES
