@@ -18,6 +18,7 @@ struct MenuBarPopoverView: View {
         VStack(spacing: 0) {
             mainPopoverContent
         }
+        .frame(width: 300)
         .clipShape(RoundedRectangle(cornerRadius: 16))
     }
 
@@ -162,8 +163,10 @@ private struct PopoverGaugeView: View {
             }
         }
         .onAppear {
-            withAnimation(.spring(response: 1.0, dampingFraction: 0.7)) {
-                animatedProgress = progress
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.08) {
+                withAnimation(.spring(response: 1.0, dampingFraction: 0.7)) {
+                    animatedProgress = progress
+                }
             }
         }
         .onChange(of: info.percentage) { _ in
