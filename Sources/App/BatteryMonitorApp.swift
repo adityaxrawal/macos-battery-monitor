@@ -77,10 +77,8 @@ private struct MenuBarLabel: View {
 class AppDelegate: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
-        // Auto-resume monitoring if it was active when the app last quit
-        if MonitorManager.shared.shouldAutoResume {
-            MonitorManager.shared.start()
-        }
+        // Always start monitoring when the app launches by default
+        MonitorManager.shared.start()
 
         // Re-check notification permission status on each launch
         MonitorManager.shared.checkNotificationAuthStatus()

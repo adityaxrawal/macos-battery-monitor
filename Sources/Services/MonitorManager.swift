@@ -112,6 +112,7 @@ final class MonitorManager: ObservableObject {
             Defaults.notifyLow:         true,
             Defaults.notifyHigh:        true,
             Defaults.notifyDrainOnAC:   true,
+            Defaults.wasRunning:        true
         ]
         ud.register(defaults: defaults)
 
@@ -326,10 +327,19 @@ final class MonitorManager: ObservableObject {
 
     private func sendNotification(id: String, title: String, body: String,
                                   sound: UNNotificationSound? = .default) {
+        // Register the category with a Dismiss action so macOS is more likely to show it as an Alert (permanent)
+        let dismissAction = UNNotificationAction(identifier: "dismiss", title: "Dismiss", options: [])
+        let category = UNNotificationCategory(identifier: "batteryAlert", actions: [dismissAction], intentIdentifiers: [], options: [.customDismissAction])
+        UNUserNotificationCenter.current().setNotificationCategories([category])
+
         let content        = UNMutableNotificationContent()
         content.title      = title
         content.body       = body
         content.sound      = sound
+        content.categoryIdentifier = "batteryAlert"
+        if #available(macOS 12.0, *) {
+            content.interruptionLevel = .timeSensitive
+        }
 
         // Replace any previous notification with the same id
         let request = UNNotificationRequest(identifier: id,
